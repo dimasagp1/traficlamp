@@ -1,28 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-  <script>
-  const sliders = document.querySelectorAll('.switch');
-
-sliders.forEach(slider => {
-  slider.addEventListener('click', () => {
-    const checked = slider.querySelector('input').checked;
-
-    slider.querySelector('img').style.display = checked ? 'block' : 'none';
-    slider.querySelector('p').textContent = checked ? 'ON' : 'OFF';
-
-    // Send MQTT message based on slider state
-    if (checked) {
-      message = new Paho.MQTT.Message("0");
-    } else {
-      message = new Paho.MQTT.Message("1");
-    }
-    message.destinationName = "traffic/raspico-2"; // Assuming this topic is correct
-    client.send(message);
-  });
-});
-
-// ... rest of your JavaScript code
-  </script>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,11 +17,7 @@ sliders.forEach(slider => {
       <div>
         <div class="toggle-container-2">
           <p id="manualText">Manual</p>
-          <label class="switch-2">
-            <input type="checkbox" id="toggleAuto" checked />
-            <span class="slider-2"></span>
-          </label>
-          <p id="autoText">Auto</p>
+          <button class="switch-2" id="toggleAuto" onclick="toggleAuto()">Auto</button>
         </div>
       </div>
     </div>
@@ -64,10 +37,7 @@ sliders.forEach(slider => {
             <img id="lamp_off1" src="img/lamp-off.png" width="150" alt="" />
           </div>
           <div class="toggle-container">
-            <label class="switch">
-              <input type="checkbox" id="toggleSwitch1" />
-              <span class="slider"></span>
-            </label>
+            <button class="switch" id="toggleSwitch1" onclick="toggleSwitch(1)"></button>
             <p id="toggleText1">OFF</p>
           </div>
         </div>
@@ -83,10 +53,7 @@ sliders.forEach(slider => {
             <img id="lamp_off2" src="img/lamp-off.png" width="150" alt="" />
           </div>
           <div class="toggle-container">
-            <label class="switch">
-              <input type="checkbox" id="toggleSwitch2" />
-              <span class="slider"></span>
-            </label>
+            <button class="switch" id="toggleSwitch2" onclick="toggleSwitch(2)"></button>
             <p id="toggleText2">OFF</p>
           </div>
         </div>
@@ -102,10 +69,7 @@ sliders.forEach(slider => {
             <img id="lamp_off3" src="img/lamp-off.png" width="150" alt="" />
           </div>
           <div class="toggle-container">
-            <label class="switch">
-              <input type="checkbox" id="toggleSwitch3" />
-              <span class="slider"></span>
-            </label>
+            <button class="switch" id="toggleSwitch3" onclick="toggleSwitch(3)"></button>
             <p id="toggleText3">OFF</p>
           </div>
         </div>
@@ -115,5 +79,29 @@ sliders.forEach(slider => {
 
   <script src="mqttws31.js"></script>
   <script src="app.js"></script>
+  <script>
+    function toggleSwitch(switchNumber) {
+      const switchElement = document.getElementById(`toggleSwitch${switchNumber}`);
+      const checked = switchElement.classList.contains('on');
+
+      switchElement.classList.toggle('on', !checked);
+      switchElement.classList.toggle('off', checked);
+
+      const lampOnElement = document.getElementById(`lamp_on${switchNumber}`);
+      const lampOffElement = document.getElementById(`lamp_off${switchNumber}`);
+
+      lampOnElement.style.display = checked ? 'none' : 'block';
+      lampOffElement.style.display = checked ? 'block' : 'none';
+
+      // Send MQTT message based on button state
+      const message = new Paho.MQTT.Message(checked ? '1' : '0');
+      message.destinationName = 'traffic/raspico-2'; // Assuming this topic is correct
+      client.send(message);
+    }
+
+    function toggleAuto() {
+      // Add your logic for handling Auto toggle here
+    }
+  </script>
 </body>
 </html>
