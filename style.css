@@ -135,7 +135,7 @@ span {
 
 .slider:before {
   position: absolute;
-  content: "off";
+  content: "";
   height: 26px;
   width: 26px;
   left: 4px;
