@@ -13,6 +13,28 @@ const toggleText3 = document.getElementById("toggleText3");
 const lampON3 = document.getElementById("lamp_on3");
 const lampOFF3 = document.getElementById("lamp_off3");
 
+const sliders = document.querySelectorAll('.switch');
+
+sliders.forEach(slider => {
+  slider.addEventListener('click', () => {
+    const checked = slider.querySelector('input').checked;
+
+    slider.querySelector('img').style.display = checked ? 'block' : 'none';
+    slider.querySelector('p').textContent = checked ? 'ON' : 'OFF';
+
+    // Send MQTT message based on slider state
+    if (checked) {
+      message = new Paho.MQTT.Message("0");
+    } else {
+      message = new Paho.MQTT.Message("1");
+    }
+    message.destinationName = "traffic/raspico-2"; // Assuming this topic is correct
+    client.send(message);
+  });
+});
+
+// ... rest of your JavaScript code
+
 function generateRandomNumber(length) {
   return Math.floor(
     Math.pow(10, length - 1) + Math.random() * 9 * Math.pow(10, length - 1)
