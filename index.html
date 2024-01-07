@@ -101,25 +101,25 @@
           <div class="toggle-container">
             <p id="toggleText1">OFF</p>
             <label class="switcher">
-              <input type="checkbox" id="toggleSwitch1" onclick="toggleSwitch(1)">
+              <input type="checkbox" id="toggleSwitch1">
               <span class="slider"></span>
             </label>
             <p id="toggleText1">ON</p>
           </div>
            <h3> KUNING </h3>
           <div class="toggle-container">
-             <p id="toggleText1">OFF</p>
+             <p id="toggleText2">OFF</p>
             <label class="switcher">
-              <input type="checkbox" id="toggleSwitch2" onclick="toggleSwitch(2)">
+              <input type="checkbox" id="toggleSwitch2">
               <span class="slider"></span>
             </label>
             <p id="toggleText2">ON</p>
           </div>
            <h3> HIJAU </h3>
           <div class="toggle-container">
-             <p id="toggleText1">OFF</p>
+             <p id="toggleText3">OFF</p>
             <label class="switcher">
-              <input type="checkbox" id="toggleSwitch3" onclick="toggleSwitch(3)">
+              <input type="checkbox" id="toggleSwitch3">
               <span class="slider"></span>
             </label>
             <p id="toggleText3">ON</p>
@@ -129,5 +129,33 @@
     </div>
   </div>
 
+<script src="mqttws31.js"></script>
+  <script src="app.js"></script>
+  <script>
+    function toggleSwitch(switchNumber) {
+      const switchElement = document.getElementById(toggleSwitch${switchNumber});
+      const checked = switchElement.checked;
+
+      // Handle your logic for switch state
+      const lampOnElement = document.getElementById(lamp_on${switchNumber});
+      const lampOffElement = document.getElementById(lamp_off${switchNumber});
+
+      lampOnElement.style.display = checked ? 'none' : 'block';
+      lampOffElement.style.display = checked ? 'block' : 'none';
+
+      // Send MQTT message based on switch state
+      const message = new Paho.MQTT.Message(checked ? '1' : '0');
+      message.destinationName = 'traffic/raspico-2'; // Assuming this topic is correct
+      client.send(message);
+    }
+
+    function toggleAuto() {
+      const toggleAutoElement = document.getElementById('toggleAuto');
+      const checked = toggleAutoElement.checked;
+
+      // Add your logic for handling Auto toggle here
+      console.log('Auto Toggle State:', checked);
+    }
+  </script>
 </body>
 </html>
