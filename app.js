@@ -19,7 +19,7 @@ function generateRandomNumber(length) {
   );
 }
 
-const clientId = "clientId-traffic-web-2-" + generateRandomNumber(4);
+const clientId = "clientId-traffic-raspico-2-" + generateRandomNumber(4);
 
 client = new Paho.MQTT.Client("broker.hivemq.com", Number(8884), clientId);
 client.onConnectionLost = onConnectionLost;
@@ -28,7 +28,7 @@ client.connect({ onSuccess: onConnect });
 
 function onConnect() {
   console.log("onConnect");
-  client.subscribe("traffic/web-2");
+  client.subscribe("traffic/raspico-2");
 }
 
 function onConnectionLost(responseObject) {
@@ -57,7 +57,7 @@ function lamp_on(toggleSwitch, lampON, lampOFF, toggleText) {
   lampOFF.style.display = "none";
   lampON.style.display = "inline-block";
   message = new Paho.MQTT.Message("0");
-  message.destinationName = "traffic/raspico-2"; // Assuming this topic is correct
+  message.destinationName = "traffic/web-2"; // Assuming this topic is correct
   client.send(message);
 }
 
@@ -67,7 +67,7 @@ function lamp_off(toggleSwitch, lampON, lampOFF, toggleText) {
   lampON.style.display = "none";
   lampOFF.style.display = "inline-block";
   message = new Paho.MQTT.Message("1");
-  message.destinationName = "traffic/raspico-2"; // Assuming this topic is correct
+  message.destinationName = "traffic/web-2"; // Assuming this topic is correct
   client.send(message);
 }
 
