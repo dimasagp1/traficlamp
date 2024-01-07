@@ -1,68 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 20px;
-    }
-
-    h1 {
-      color: #333;
-    }
-
-    .lamp-button {
-      display: inline-block;
-      width: 100px;
-      height: 40px;
-      margin: 10px;
-      cursor: pointer;
-      border: 2px solid #333;
-      border-radius: 5px;
-      background-color: #eee;
-      color: #333;
-      font-size: 16px;
-      line-height: 40px;
-    }
-
-    .lamp-on {
-      background-color: #4CAF50;
-      color: #fff;
-    }
-  </style>
-  <title>Lamp Control</title>
+    <title>Raspberry Pi Remote</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #f7f7f7;
+            padding-top: 20%;
+        }
+        button {
+            margin: 20px;
+            padding: 20px;
+            font-size: 24px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Lamp Control</h1>
-
-  <div class="lamp-button" id="lampButton1" onclick="toggleLamp(1)">Lamp 1</div>
-  <div class="lamp-button" id="lampButton2" onclick="toggleLamp(2)">Lamp 2</div>
-  <div class="lamp-button" id="lampButton3" onclick="toggleLamp(3)">Lamp 3</div>
-
-  <script>
-    function toggleLamp(lampNumber) {
-      const lampButton = document.getElementById(`lampButton${lampNumber}`);
-
-      // Send MQTT message based on button state
-      const message = new Paho.MQTT.Message("0");
-      message.destinationName = `traffic/raspico-${lampNumber}`;
-      client.send(message);
-
-      // Update button style based on state
-      if (lampButton.classList.contains("lamp-on")) {
-        lampButton.classList.remove("lamp-on");
-      } else {
-        lampButton.classList.add("lamp-on");
-      }
-    }
-  </script>
-
-  <script src="mqttws31.js"></script>
-  <script>
-    // Your MQTT connection logic here
-  </script>
+    <h1>Raspberry Pi Remote</h1>
+    <button id="ledOn" onclick="sendCommand('1')">LED ON</button>
+    <button id="ledOff" onclick="sendCommand('0')">LED OFF</button>
+    <script>
+        function sendCommand(command) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/publish", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            var data = JSON.stringify({ "command": command });
+            xhr.send(data);
+        }
+    </script>
 </body>
 </html>
