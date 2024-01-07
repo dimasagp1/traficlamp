@@ -1,5 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+  <script>
+  const sliders = document.querySelectorAll('.switch');
+
+sliders.forEach(slider => {
+  slider.addEventListener('click', () => {
+    const checked = slider.querySelector('input').checked;
+
+    slider.querySelector('img').style.display = checked ? 'block' : 'none';
+    slider.querySelector('p').textContent = checked ? 'ON' : 'OFF';
+
+    // Send MQTT message based on slider state
+    if (checked) {
+      message = new Paho.MQTT.Message("0");
+    } else {
+      message = new Paho.MQTT.Message("1");
+    }
+    message.destinationName = "traffic/raspico-2"; // Assuming this topic is correct
+    client.send(message);
+  });
+});
+
+// ... rest of your JavaScript code
+  </script>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
