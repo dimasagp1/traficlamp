@@ -19,7 +19,7 @@ function generateRandomNumber(length) {
   );
 }
 
-const clientId = "clientId-traffic-raspico-2-" + generateRandomNumber(4);
+const clientId = "clientId-traffic-web-2-" + generateRandomNumber(4);
 
 client = new Paho.MQTT.Client("broker.hivemq.com", Number(8884), clientId);
 client.onConnectionLost = onConnectionLost;
@@ -28,7 +28,7 @@ client.connect({ onSuccess: onConnect });
 
 function onConnect() {
   console.log("onConnect");
-  client.subscribe("traffic/raspico-2");
+  client.subscribe("traffic/web-2");
 }
 
 function onConnectionLost(responseObject) {
