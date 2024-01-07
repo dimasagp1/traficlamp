@@ -14,16 +14,12 @@
         <img src="img/favicon.png" height="25" alt="" />
         <div>Lamp Control</div>
       </div>
-    <div>
-            <img
-              id="lamp_on1"
-              src="img/lamp-on.png"
-              style="display: none"
-              width="150"
-              alt="MANUAL"
-            />
-            <img id="lamp_off1" src="img/lamp-off.png" width="150" alt="AUTO" />
-          </div>
+      <div>
+        <div class="toggle-container-2">
+          <p id="manualText">Manual</p>
+          <input type="range" min="0" max="1" step="1" value="1" id="manualSlider" onchange="toggleAuto()">
+        </div>
+      </div>
     </div>
 
     <div class="myapp">
@@ -104,7 +100,11 @@
     }
 
     function toggleAuto() {
-      // Add your logic for handling Auto toggle here
+      const manualSlider = document.getElementById('manualSlider');
+      const value = manualSlider.value;
+      
+      // Add your logic for handling Manual slider here
+      console.log('Manual Slider Value:', value);
     }
   </script>
 </body>
