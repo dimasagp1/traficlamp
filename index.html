@@ -106,7 +106,7 @@
             </label>
             <p id="toggleText1">ON</p>
           </div>
-           <h3 color='yellow'> KUNING </h3>
+           <h3> KUNING </h3>
           <div class="toggle-container">
              <p id="toggleText1">OFF</p>
             <label class="switcher">
@@ -129,33 +129,5 @@
     </div>
   </div>
 
-  <script src="mqttws31.js"></script>
-  <script src="app.js"></script>
-  <script>
-    function toggleSwitch(switchNumber) {
-      const switchElement = document.getElementById(`toggleSwitch${switchNumber}`);
-      const checked = switchElement.checked;
-
-      // Handle your logic for switch state
-      const lampOnElement = document.getElementById(`lamp_on${switchNumber}`);
-      const lampOffElement = document.getElementById(`lamp_off${switchNumber}`);
-
-      lampOnElement.style.display = checked ? 'none' : 'block';
-      lampOffElement.style.display = checked ? 'block' : 'none';
-
-      // Send MQTT message based on switch state
-      const message = new Paho.MQTT.Message(checked ? '1' : '0');
-      message.destinationName = 'traffic/raspico-2'; // Assuming this topic is correct
-      client.send(message);
-    }
-
-    function toggleAuto() {
-      const toggleAutoElement = document.getElementById('toggleAuto');
-      const checked = toggleAutoElement.checked;
-
-      // Add your logic for handling Auto toggle here
-      console.log('Auto Toggle State:', checked);
-    }
-  </script>
 </body>
 </html>
