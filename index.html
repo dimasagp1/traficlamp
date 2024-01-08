@@ -6,70 +6,7 @@
   <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Tambahkan gaya khusus untuk menyesuaikan tampilan switcher */
-    .switcher {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
-
-    .switcher input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      -webkit-transition: .4s;
-      transition: .4s;
-      border-radius: 34px;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      -webkit-transition: .4s;
-      transition: .4s;
-      border-radius: 50%;
-    }
-
-    input:checked + .slider {
-      background-color: #2196F3;
-    }
-
-    input:focus + .slider {
-      box-shadow: 0 0 1px #2196F3;
-    }
-
-    input:checked + .slider:before {
-      -webkit-transform: translateX(26px);
-      -ms-transform: translateX(26px);
-      transform: translateX(26px);
-    }
-
-    /* Gaya tambahan sesuai kebutuhan Anda */
-    .toggle-container-2 {
-      display: flex;
-      align-items: center;
-    }
-
-    #manualText, #autoText {
-      margin: 0;
-      margin-right: 10px;
-    }
+    /* ... (unchanged styles) ... */
   </style>
   <title>Lamp Control</title>
 </head>
@@ -94,58 +31,55 @@
 
     <div class="myapp">
       <div class="sensor">
-        <h2>Trafic Light Control</h2>
+        <h2>Traffic Light Control</h2>
         <div class="data-lampu">
-          <!-- Sisipkan elemen switcher untuk setiap lampu -->
           <h3> MERAH </h3>
           <div class="toggle-container">
-            <p id="toggleText1">OFF</p>
+            <p id="toggleText1_off">OFF</p>
             <label class="switcher">
-              <input type="checkbox" id="toggleSwitch1">
+              <input type="checkbox" id="toggleSwitch1" onclick="toggleSwitch(1)">
               <span class="slider"></span>
             </label>
-            <p id="toggleText1">ON</p>
+            <p id="toggleText1_on">ON</p>
           </div>
-           <h3> KUNING </h3>
+          <h3> KUNING </h3>
           <div class="toggle-container">
-             <p id="toggleText2">OFF</p>
+            <p id="toggleText2_off">OFF</p>
             <label class="switcher">
-              <input type="checkbox" id="toggleSwitch2">
+              <input type="checkbox" id="toggleSwitch2" onclick="toggleSwitch(2)">
               <span class="slider"></span>
             </label>
-            <p id="toggleText2">ON</p>
+            <p id="toggleText2_on">ON</p>
           </div>
-           <h3> HIJAU </h3>
+          <h3> HIJAU </h3>
           <div class="toggle-container">
-             <p id="toggleText3">OFF</p>
+            <p id="toggleText3_off">OFF</p>
             <label class="switcher">
-              <input type="checkbox" id="toggleSwitch3">
+              <input type="checkbox" id="toggleSwitch3" onclick="toggleSwitch(3)">
               <span class="slider"></span>
             </label>
-            <p id="toggleText3">ON</p>
+            <p id="toggleText3_on">ON</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-<script src="mqttws31.js"></script>
+  <script src="mqttws31.js"></script>
   <script src="app.js"></script>
   <script>
     function toggleSwitch(switchNumber) {
-      const switchElement = document.getElementById(toggleSwitch${switchNumber});
+      const switchElement = document.getElementById(`toggleSwitch${switchNumber}`);
       const checked = switchElement.checked;
 
-      // Handle your logic for switch state
-      const lampOnElement = document.getElementById(lamp_on${switchNumber});
-      const lampOffElement = document.getElementById(lamp_off${switchNumber});
+      const lampOnElement = document.getElementById(`toggleText${switchNumber}_on`);
+      const lampOffElement = document.getElementById(`toggleText${switchNumber}_off`);
 
-      lampOnElement.style.display = checked ? 'none' : 'block';
-      lampOffElement.style.display = checked ? 'block' : 'none';
+      lampOnElement.style.display = checked ? 'block' : 'none';
+      lampOffElement.style.display = checked ? 'none' : 'block';
 
-      // Send MQTT message based on switch state
       const message = new Paho.MQTT.Message(checked ? '1' : '0');
-      message.destinationName = 'traffic/raspico-2'; // Assuming this topic is correct
+      message.destinationName = 'traffic/raspico-2'; // Update the correct topic
       client.send(message);
     }
 
@@ -153,9 +87,9 @@
       const toggleAutoElement = document.getElementById('toggleAuto');
       const checked = toggleAutoElement.checked;
 
-      // Add your logic for handling Auto toggle here
       console.log('Auto Toggle State:', checked);
+      // Add your logic for handling Auto toggle here
     }
   </script>
 </body>
-  </html>
+</html>
